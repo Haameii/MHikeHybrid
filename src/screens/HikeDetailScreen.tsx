@@ -79,16 +79,6 @@ const HikeDetailScreen: React.FC<Props> = ({ route, navigation, hikes, onDelete 
           >
             <Text style={styles.primaryButtonText}>Edit</Text>
           </TouchableOpacity>
-
-          {/* Nếu muốn, có thể thêm nút Delete sử dụng handleDelete */}
-          {/* 
-          <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={handleDelete}
-          >
-            <Text style={styles.deleteButtonText}>Delete</Text>
-          </TouchableOpacity>
-          */}
         </View>
       </View>
     </View>

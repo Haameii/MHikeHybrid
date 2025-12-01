@@ -20,6 +20,7 @@ import {
 
 import EditHikeScreen from "@/src/screens/EditHikeScreen";
 import HikeDetailScreen from "@/src/screens/HikeDetailScreen";
+import { FontAwesome } from "@expo/vector-icons";
 import HikeForm from "../src/components/HikeForm";
 import HikeList from "../src/components/HikeList";
 import MapSection from "../src/components/MapSection";
@@ -357,7 +358,7 @@ const App: React.FC = () => {
                   style={{ paddingHorizontal: 10 }}
                   onPress={() => navigation.goBack()}
                 >
-                  <Text style={{ color: "#4CAF50", fontSize: 16 }}>+</Text>
+                   <FontAwesome name="arrow-left" size={20} color="#111" />
                 </TouchableOpacity>
               ),
             })}
