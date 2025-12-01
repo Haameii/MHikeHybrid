@@ -11,6 +11,7 @@ type RootStackParamList = {
   EditHike: { hikeId: string };
 };
 
+// ✅ Sửa generic từ "Home" -> "HikeDetail"
 type Props = NativeStackScreenProps<RootStackParamList, "HikeDetail"> & {
   hikes: Hike[];
   onDelete: (id: string) => void;
@@ -26,7 +27,8 @@ const HikeDetailScreen: React.FC<Props> = ({ route, navigation, hikes, onDelete 
         <Text style={styles.errorText}>Hike not found.</Text>
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => navigation.goBack()}
+          // ✅ Luôn quay về Home
+          onPress={() => navigation.navigate("Home")}
         >
           <Text style={styles.backButtonText}>Back to Home</Text>
         </TouchableOpacity>
@@ -36,16 +38,16 @@ const HikeDetailScreen: React.FC<Props> = ({ route, navigation, hikes, onDelete 
 
   const handleDelete = () => {
     onDelete(hike.id);
-    navigation.goBack();
+    navigation.navigate("Home");
   };
 
   return (
     <View style={styles.screen}>
-      
       {/* BACK ICON */}
       <TouchableOpacity
         style={styles.backIcon}
-        onPress={() => navigation.goBack()}
+        // ✅ Back icon cũng quay về Home
+        onPress={() => navigation.navigate("Home")}
       >
         <Ionicons name="arrow-back" size={28} color="#4CAF50" />
       </TouchableOpacity>
@@ -94,8 +96,16 @@ const HikeDetailScreen: React.FC<Props> = ({ route, navigation, hikes, onDelete 
             <Text style={styles.primaryButtonText}>Edit</Text>
           </TouchableOpacity>
 
+          {/* Nếu muốn, có thể thêm nút Delete sử dụng handleDelete */}
+          {/* 
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={handleDelete}
+          >
+            <Text style={styles.deleteButtonText}>Delete</Text>
+          </TouchableOpacity>
+          */}
         </View>
-
       </View>
     </View>
   );
@@ -111,16 +121,14 @@ const styles = StyleSheet.create({
     paddingTop: 80,
   },
 
-  /* 🔥 BACK ICON */
   backIcon: {
-    paddingTop:20,
+    paddingTop: 20,
     position: "absolute",
     top: 20,
     left: 16,
     zIndex: 10,
   },
 
-  /* 🔥 WHITE CARD (KHUNG TRẮNG) */
   cardContainer: {
     backgroundColor: "white",
     borderRadius: 12,

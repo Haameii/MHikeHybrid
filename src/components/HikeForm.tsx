@@ -2,6 +2,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 import React, { useState } from "react";
 import {
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -91,11 +92,13 @@ const HikeForm: React.FC<Props> = ({
       {showPicker && (
         <DateTimePicker
           value={date ? new Date(date) : new Date()}
-          mode="datetime"
+          // iOS dùng datetime, Android chỉ dùng date
+          mode={Platform.OS === "ios" ? "datetime" : "date"}
           display="default"
           onChange={onSelectDate}
         />
       )}
+
 
       {/* Length */}
       <TextInput

@@ -173,7 +173,8 @@ const App: React.FC = () => {
 
   const HomeScreen = ({ navigation }: any) => (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled">
         <Text style={styles.title}>M-Hike Hybrid</Text>
         <Text style={styles.subtitle}>
         </Text>

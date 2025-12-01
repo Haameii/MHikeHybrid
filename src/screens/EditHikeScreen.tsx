@@ -1,4 +1,5 @@
 // app/EditHikeScreen.tsx
+import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
@@ -31,7 +32,7 @@ const EditHikeScreen: React.FC<Props> = ({ route, navigation, hikes, setHikes })
   useEffect(() => {
     if (!existing) {
       Alert.alert("Error", "Hike not found", [
-        { text: "OK", onPress: () => navigation.goBack() },
+        { text: "OK", onPress: () => navigation.navigate("Home") },
       ]);
       return;
     }
@@ -75,7 +76,8 @@ const EditHikeScreen: React.FC<Props> = ({ route, navigation, hikes, setHikes })
     };
 
     setHikes((prev) => prev.map((h) => (h.id === hikeId ? updated : h)));
-    navigation.goBack(); // quay về HikeDetail
+    // Sau khi lưu xong, quay lại màn chi tiết của hike
+    navigation.navigate("HikeDetail", { hikeId });
   };
 
   const resetForm = () => {
@@ -94,12 +96,12 @@ const EditHikeScreen: React.FC<Props> = ({ route, navigation, hikes, setHikes })
 
   return (
     <View style={styles.container}>
-
+      {/* BACK ICON giống HikeDetailScreen */}
       <TouchableOpacity
-        style={styles.backButton}
+        style={styles.backIcon}
         onPress={() => navigation.navigate("HikeDetail", { hikeId })}
       >
-  
+        <Ionicons name="arrow-back" size={28} color={PRIMARY_GREEN} />
       </TouchableOpacity>
 
       <HikeForm
@@ -122,28 +124,22 @@ const EditHikeScreen: React.FC<Props> = ({ route, navigation, hikes, setHikes })
     </View>
   );
 };
+
 const PRIMARY_GREEN = "#4CAF50";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#E8F5E9",
     padding: 16,
-    paddingTop: 60,
+    paddingTop: 80, // chừa chỗ cho back icon
   },
-
-    backButton: {
-    marginBottom: 10,
-    padding: 10,
-    backgroundColor: "white",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: PRIMARY_GREEN,
-    alignItems: "center",
-  },
-  backButtonText: {
-    color: PRIMARY_GREEN,
-    fontSize: 16,
-    fontWeight: "600",
+  backIcon: {
+    position: "absolute",
+    top: 20,
+    left: 16,
+    zIndex: 10,
+    paddingTop: 20,
   },
 });
 
