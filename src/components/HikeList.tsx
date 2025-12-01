@@ -1,6 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import {
+  Alert,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -21,10 +22,32 @@ const HikeList: React.FC<Props> = ({
   onDeleteHike,
   onResetDatabase,
 }) => {
+  // 👇 Hàm confirm xóa
+  const confirmDeleteHike = (id: string, name?: string) => {
+    Alert.alert(
+      "Delete Hike",
+      name
+        ? `Are you sure you want to delete "${name}"?`
+        : "Are you sure you want to delete this hike?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => onDeleteHike(id),
+        },
+      ]
+    );
+  };
+
   return (
     <View style={styles.card}>
       <View style={styles.headerRow}>
         <Text style={styles.cardTitle}>Saved Hikes</Text>
+
         <TouchableOpacity style={styles.resetButton} onPress={onResetDatabase}>
           <Text style={styles.resetButtonText}>Reset DB</Text>
         </TouchableOpacity>
@@ -54,16 +77,15 @@ const HikeList: React.FC<Props> = ({
               {item.latitude !== undefined &&
                 item.longitude !== undefined && (
                   <Text style={styles.hikeGps}>
-                    GPS: {item.latitude.toFixed(4)},{" "}
-                    {item.longitude.toFixed(4)}
+                    GPS: {item.latitude.toFixed(4)}, {item.longitude.toFixed(4)}
                   </Text>
                 )}
             </TouchableOpacity>
 
-            {/* 🔥 Delete icon button */}
+            {/* 🔥 Delete icon button với confirm */}
             <TouchableOpacity
               style={styles.deleteButton}
-              onPress={() => onDeleteHike(item.id)}
+              onPress={() => confirmDeleteHike(item.id, item.name)}
             >
               <FontAwesome name="trash" size={20} color="#da8483ff" />
             </TouchableOpacity>

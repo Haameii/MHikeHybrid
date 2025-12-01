@@ -1,8 +1,7 @@
 // app/EditHikeScreen.tsx
-import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 
 import HikeForm from "../components/HikeForm";
 import { Hike } from "../types";
@@ -96,14 +95,6 @@ const EditHikeScreen: React.FC<Props> = ({ route, navigation, hikes, setHikes })
 
   return (
     <View style={styles.container}>
-      {/* BACK ICON giống HikeDetailScreen */}
-      <TouchableOpacity
-        style={styles.backIcon}
-        onPress={() => navigation.navigate("HikeDetail", { hikeId })}
-      >
-        <Ionicons name="arrow-back" size={28} color={PRIMARY_GREEN} />
-      </TouchableOpacity>
-
       <HikeForm
         editingId={existing.id}
         name={name}
@@ -134,13 +125,7 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 80, // chừa chỗ cho back icon
   },
-  backIcon: {
-    position: "absolute",
-    top: 20,
-    left: 16,
-    zIndex: 10,
-    paddingTop: 20,
-  },
+
 });
 
 export default EditHikeScreen;

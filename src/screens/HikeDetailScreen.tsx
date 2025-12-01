@@ -1,5 +1,4 @@
 // app/HikeDetailScreen.tsx
-import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -25,13 +24,6 @@ const HikeDetailScreen: React.FC<Props> = ({ route, navigation, hikes, onDelete 
     return (
       <View style={styles.screen}>
         <Text style={styles.errorText}>Hike not found.</Text>
-        <TouchableOpacity
-          style={styles.backButton}
-          // ✅ Luôn quay về Home
-          onPress={() => navigation.navigate("Home")}
-        >
-          <Text style={styles.backButtonText}>Back to Home</Text>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -43,14 +35,6 @@ const HikeDetailScreen: React.FC<Props> = ({ route, navigation, hikes, onDelete 
 
   return (
     <View style={styles.screen}>
-      {/* BACK ICON */}
-      <TouchableOpacity
-        style={styles.backIcon}
-        // ✅ Back icon cũng quay về Home
-        onPress={() => navigation.navigate("Home")}
-      >
-        <Ionicons name="arrow-back" size={28} color="#4CAF50" />
-      </TouchableOpacity>
 
       {/* WHITE CARD CONTAINER */}
       <View style={styles.cardContainer}>
@@ -187,18 +171,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  backButton: {
-    marginTop: 16,
-    padding: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: PRIMARY_GREEN,
-    alignItems: "center",
-  },
-  backButtonText: {
-    color: PRIMARY_GREEN,
-    fontWeight: "600",
-  },
 
   errorText: {
     color: "red",
