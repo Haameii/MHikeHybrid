@@ -1,0 +1,141 @@
+import React from "react";
+import {
+  FlatList,
+  ListRenderItem,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Hike } from "../types";
+
+type Props = {
+  hikes: Hike[];
+  onEditHike: (hike: Hike) => void;
+  onDeleteHike: (id: string) => void;
+  onResetDatabase: () => void;
+};
+
+const HikeList: React.FC<Props> = ({
+  hikes,
+  onEditHike,
+  onDeleteHike,
+  onResetDatabase,
+}) => {
+  const renderItem: ListRenderItem<Hike> = ({ item }) => (
+    <View style={styles.hikeItem}>
+      <TouchableOpacity style={{ flex: 1 }} onPress={() => onEditHike(item)}>
+        <Text style={styles.hikeName}>{item.name}</Text>
+        <Text style={styles.hikeText}>{item.location}</Text>
+        <Text style={styles.hikeText}>
+          Date: {item.date} | {item.lengthKm} km
+        </Text>
+
+        {item.difficulty && (
+          <Text style={styles.hikeText}>Difficulty: {item.difficulty}</Text>
+        )}
+
+        {item.latitude !== undefined && item.longitude !== undefined && (
+          <Text style={styles.hikeGps}>
+            GPS: {item.latitude.toFixed(4)}, {item.longitude.toFixed(4)}
+          </Text>
+        )}
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.deleteButton}
+        onPress={() => onDeleteHike(item.id)}
+      >
+        <Text style={styles.deleteButtonText}>Delete</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  return (
+    <View style={styles.card}>
+      <View style={styles.headerRow}>
+        <Text style={styles.cardTitle}>Saved Hikes</Text>
+        <TouchableOpacity style={styles.resetButton} onPress={onResetDatabase}>
+          <Text style={styles.resetButtonText}>Reset DB</Text>
+        </TouchableOpacity>
+      </View>
+
+      {hikes.length === 0 ? (
+        <Text style={styles.emptyText}>No hikes yet. Add one above.</Text>
+      ) : (
+        <FlatList
+          data={hikes}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+        />
+      )}
+    </View>
+  );
+};
+
+const PRIMARY_GREEN = "#4CAF50";
+
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: "white",
+    padding: 12,
+    borderRadius: 10,
+    marginBottom: 16,
+  },
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: PRIMARY_GREEN,
+  },
+  resetButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#FF9800",
+  },
+  resetButtonText: {
+    color: "#FF9800",
+    fontWeight: "600",
+  },
+  emptyText: {
+    color: "#777",
+  },
+  hikeItem: {
+    flexDirection: "row",
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
+  hikeName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#2E7D32",
+  },
+  hikeText: {
+    fontSize: 13,
+    color: "#555",
+  },
+  hikeGps: {
+    fontSize: 12,
+    color: "#00796B",
+  },
+  deleteButton: {
+    backgroundColor: "#d07472ff",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    marginLeft: 8,
+  },
+  deleteButtonText: {
+    color: "white",
+    fontWeight: "600",
+  },
+});
+
+export default HikeList;
