@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -174,9 +174,8 @@ const App: React.FC = () => {
   const HomeScreen = ({ navigation }: any) => (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>M-Hike Hybrid (TypeScript)</Text>
+        <Text style={styles.title}>M-Hike Hybrid</Text>
         <Text style={styles.subtitle}>
-          Features e, f, g – Persistence, GPS, Map
         </Text>
 
         <HikeForm
@@ -199,7 +198,6 @@ const App: React.FC = () => {
             if (isNew) {
               resetForm();
             } else {
-              // nếu đang edit từ EditHikeScreen thì không dùng Home form
             }
           }}
           onReset={resetForm}
@@ -227,42 +225,57 @@ const App: React.FC = () => {
 
   return (
     <NavigationIndependentTree>
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          options={{ title: "M-Hike" }}
-        >
-          {(props) => <HomeScreen {...props} />}
-        </Stack.Screen>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{ headerShown: false }}>
+          <Stack.Screen
+            name="Home"
+            options={{ title: "M-Hike" }}
+          >
+            {(props) => <HomeScreen {...props} />}
+          </Stack.Screen>
 
-        <Stack.Screen
-          name="HikeDetail"
-          options={{ title: "Hike Detail" }}
-        >
-          {(props) => (
-            <HikeDetailScreen
-              {...props}
-              hikes={hikes}
-              onDelete={deleteHike}
-            />
-          )}
-        </Stack.Screen>
+          <Stack.Screen
+            name="HikeDetail"
+            options={{ title: "Hike Detail" }}
+          >
+            {(props) => (
+              <HikeDetailScreen
+                {...props}
+                hikes={hikes}
+                onDelete={deleteHike}
+              />
+            )}
+          </Stack.Screen>
 
-        <Stack.Screen
-          name="EditHike"
-          options={{ title: "Edit Hike" }}
-        >
-          {(props) => (
-            <EditHikeScreen
-              {...props}
-              hikes={hikes}
-              setHikes={setHikes}
-            />
-          )}
-        </Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen
+            name="EditHike"
+            options={({ navigation }) => ({
+              headerTitle: "Edit Hike",
+              headerTitleAlign: "center",
+              headerLeft: () => (
+                <TouchableOpacity
+                  style={{ paddingHorizontal: 10 }}
+                  onPress={() => navigation.goBack()}
+                >
+                  <Text style={{ color: "#4CAF50", fontSize: 16 }}>
+                 +
+                  </Text>
+                </TouchableOpacity>
+              ),
+            })}
+          >
+            {(props) => (
+              <EditHikeScreen
+                {...props}
+                hikes={hikes}
+                setHikes={setHikes}
+              />
+            )}
+          </Stack.Screen>
+
+        </Stack.Navigator>
+      </NavigationContainer>
     </NavigationIndependentTree>
 
   );
@@ -279,6 +292,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     paddingBottom: 40,
+    paddingTop: 60,
   },
   title: {
     fontSize: 24,
