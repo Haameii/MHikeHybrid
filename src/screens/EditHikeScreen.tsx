@@ -1,7 +1,7 @@
 // app/EditHikeScreen.tsx
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import HikeForm from "../components/HikeForm";
 import { Hike } from "../types";
@@ -94,6 +94,14 @@ const EditHikeScreen: React.FC<Props> = ({ route, navigation, hikes, setHikes })
 
   return (
     <View style={styles.container}>
+
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.navigate("HikeDetail", { hikeId })}
+      >
+  
+      </TouchableOpacity>
+
       <HikeForm
         editingId={existing.id}
         name={name}
@@ -114,12 +122,28 @@ const EditHikeScreen: React.FC<Props> = ({ route, navigation, hikes, setHikes })
     </View>
   );
 };
-
+const PRIMARY_GREEN = "#4CAF50";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#E8F5E9",
     padding: 16,
+    paddingTop: 60,
+  },
+
+    backButton: {
+    marginBottom: 10,
+    padding: 10,
+    backgroundColor: "white",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: PRIMARY_GREEN,
+    alignItems: "center",
+  },
+  backButtonText: {
+    color: PRIMARY_GREEN,
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
 

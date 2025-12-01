@@ -1,7 +1,6 @@
+import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import {
-  FlatList,
-  ListRenderItem,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -22,35 +21,6 @@ const HikeList: React.FC<Props> = ({
   onDeleteHike,
   onResetDatabase,
 }) => {
-  const renderItem: ListRenderItem<Hike> = ({ item }) => (
-    <View style={styles.hikeItem}>
-      <TouchableOpacity style={{ flex: 1 }} onPress={() => onEditHike(item)}>
-        <Text style={styles.hikeName}>{item.name}</Text>
-        <Text style={styles.hikeText}>{item.location}</Text>
-        <Text style={styles.hikeText}>
-          Date: {item.date} | {item.lengthKm} km
-        </Text>
-
-        {item.difficulty && (
-          <Text style={styles.hikeText}>Difficulty: {item.difficulty}</Text>
-        )}
-
-        {item.latitude !== undefined && item.longitude !== undefined && (
-          <Text style={styles.hikeGps}>
-            GPS: {item.latitude.toFixed(4)}, {item.longitude.toFixed(4)}
-          </Text>
-        )}
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={() => onDeleteHike(item.id)}
-      >
-        <Text style={styles.deleteButtonText}>Delete</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
   return (
     <View style={styles.card}>
       <View style={styles.headerRow}>
@@ -63,17 +33,49 @@ const HikeList: React.FC<Props> = ({
       {hikes.length === 0 ? (
         <Text style={styles.emptyText}>No hikes yet. Add one above.</Text>
       ) : (
-        <FlatList
-          data={hikes}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-        />
+        hikes.map((item) => (
+          <View key={item.id} style={styles.hikeItem}>
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              onPress={() => onEditHike(item)}
+            >
+              <Text style={styles.hikeName}>{item.name}</Text>
+              <Text style={styles.hikeText}>{item.location}</Text>
+              <Text style={styles.hikeText}>
+                Date: {item.date} | {item.lengthKm} km
+              </Text>
+
+              {item.difficulty && (
+                <Text style={styles.hikeText}>
+                  Difficulty: {item.difficulty}
+                </Text>
+              )}
+
+              {item.latitude !== undefined &&
+                item.longitude !== undefined && (
+                  <Text style={styles.hikeGps}>
+                    GPS: {item.latitude.toFixed(4)},{" "}
+                    {item.longitude.toFixed(4)}
+                  </Text>
+                )}
+            </TouchableOpacity>
+
+            {/* 🔥 Delete icon button */}
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={() => onDeleteHike(item.id)}
+            >
+              <FontAwesome name="trash" size={20} color="#da8483ff" />
+            </TouchableOpacity>
+          </View>
+        ))
       )}
     </View>
   );
 };
 
 const PRIMARY_GREEN = "#4CAF50";
+const DARK_GREEN = "#2E7D32";
 
 const styles = StyleSheet.create({
   card: {
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
   hikeName: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#2E7D32",
+    color: DARK_GREEN,
   },
   hikeText: {
     fontSize: 13,
@@ -126,15 +128,10 @@ const styles = StyleSheet.create({
     color: "#00796B",
   },
   deleteButton: {
-    backgroundColor: "#d07472ff",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 8,
+    padding: 4,
     marginLeft: 8,
-  },
-  deleteButtonText: {
-    color: "white",
-    fontWeight: "600",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

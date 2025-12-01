@@ -1,4 +1,5 @@
 // app/HikeDetailScreen.tsx
+import { Ionicons } from "@expo/vector-icons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -21,7 +22,7 @@ const HikeDetailScreen: React.FC<Props> = ({ route, navigation, hikes, onDelete 
 
   if (!hike) {
     return (
-      <View style={styles.container}>
+      <View style={styles.screen}>
         <Text style={styles.errorText}>Hike not found.</Text>
         <TouchableOpacity
           style={styles.backButton}
@@ -39,63 +40,63 @@ const HikeDetailScreen: React.FC<Props> = ({ route, navigation, hikes, onDelete 
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{hike.name}</Text>
-
-      <Text style={styles.label}>Location:</Text>
-      <Text style={styles.value}>{hike.location}</Text>
-
-      <Text style={styles.label}>Date & Time:</Text>
-      <Text style={styles.value}>{hike.date}</Text>
-
-      <Text style={styles.label}>Length (km):</Text>
-      <Text style={styles.value}>{hike.lengthKm}</Text>
-
-      {hike.difficulty && (
-        <>
-          <Text style={styles.label}>Difficulty:</Text>
-          <Text style={styles.value}>{hike.difficulty}</Text>
-        </>
-      )}
-
-      {hike.description && (
-        <>
-          <Text style={styles.label}>Description:</Text>
-          <Text style={styles.value}>{hike.description}</Text>
-        </>
-      )}
-
-      {hike.latitude !== undefined && hike.longitude !== undefined && (
-        <>
-          <Text style={styles.label}>GPS Coordinates:</Text>
-          <Text style={styles.value}>
-            {hike.latitude.toFixed(5)}, {hike.longitude.toFixed(5)}
-          </Text>
-        </>
-      )}
-
-      <View style={styles.buttonRow}>
-        <TouchableOpacity
-          style={styles.primaryButton}
-          onPress={() => navigation.navigate("EditHike", { hikeId: hike.id })}
-        >
-          <Text style={styles.primaryButtonText}>Edit</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.deleteButton}
-          onPress={handleDelete}
-        >
-          <Text style={styles.deleteButtonText}>Delete</Text>
-        </TouchableOpacity>
-      </View>
-
+    <View style={styles.screen}>
+      
+      {/* BACK ICON */}
       <TouchableOpacity
-        style={styles.backButton}
+        style={styles.backIcon}
         onPress={() => navigation.goBack()}
       >
-        <Text style={styles.backButtonText}>Back to Home</Text>
+        <Ionicons name="arrow-back" size={28} color="#4CAF50" />
       </TouchableOpacity>
+
+      {/* WHITE CARD CONTAINER */}
+      <View style={styles.cardContainer}>
+        <Text style={styles.title}>{hike.name}</Text>
+
+        <Text style={styles.label}>Location:</Text>
+        <Text style={styles.value}>{hike.location}</Text>
+
+        <Text style={styles.label}>Date & Time:</Text>
+        <Text style={styles.value}>{hike.date}</Text>
+
+        <Text style={styles.label}>Length (km):</Text>
+        <Text style={styles.value}>{hike.lengthKm}</Text>
+
+        {hike.difficulty && (
+          <>
+            <Text style={styles.label}>Difficulty:</Text>
+            <Text style={styles.value}>{hike.difficulty}</Text>
+          </>
+        )}
+
+        {hike.description && (
+          <>
+            <Text style={styles.label}>Description:</Text>
+            <Text style={styles.value}>{hike.description}</Text>
+          </>
+        )}
+
+        {hike.latitude !== undefined && hike.longitude !== undefined && (
+          <>
+            <Text style={styles.label}>GPS Coordinates:</Text>
+            <Text style={styles.value}>
+              {hike.latitude.toFixed(5)}, {hike.longitude.toFixed(5)}
+            </Text>
+          </>
+        )}
+
+        <View style={styles.buttonRow}>
+          <TouchableOpacity
+            style={styles.primaryButton}
+            onPress={() => navigation.navigate("EditHike", { hikeId })}
+          >
+            <Text style={styles.primaryButtonText}>Edit</Text>
+          </TouchableOpacity>
+
+        </View>
+
+      </View>
     </View>
   );
 };
@@ -103,39 +104,61 @@ const HikeDetailScreen: React.FC<Props> = ({ route, navigation, hikes, onDelete 
 const PRIMARY_GREEN = "#4CAF50";
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
     backgroundColor: "#E8F5E9",
     padding: 16,
+    paddingTop: 80,
   },
+
+  /* 🔥 BACK ICON */
+  backIcon: {
+    paddingTop:20,
+    position: "absolute",
+    top: 20,
+    left: 16,
+    zIndex: 10,
+  },
+
+  /* 🔥 WHITE CARD (KHUNG TRẮNG) */
+  cardContainer: {
+    backgroundColor: "white",
+    borderRadius: 12,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#D0D0D0",
+    elevation: 3,
+  },
+
   title: {
     fontSize: 24,
     fontWeight: "bold",
     color: PRIMARY_GREEN,
     marginBottom: 16,
+    textAlign: "center",
   },
+
   label: {
     fontSize: 14,
     fontWeight: "600",
-    marginTop: 8,
+    marginTop: 10,
   },
+
   value: {
     fontSize: 14,
     color: "#333",
   },
-  errorText: {
-    fontSize: 16,
-    color: "red",
-  },
+
   buttonRow: {
     flexDirection: "row",
-    marginTop: 20,
-    gap: 8,
+    marginTop: 24,
+    gap: 12,
   },
+
   primaryButton: {
     flex: 1,
     backgroundColor: PRIMARY_GREEN,
-    padding: 10,
+    padding: 12,
     borderRadius: 8,
     alignItems: "center",
   },
@@ -143,10 +166,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "600",
   },
+
   deleteButton: {
     flex: 1,
     backgroundColor: "#E53935",
-    padding: 10,
+    padding: 12,
     borderRadius: 8,
     alignItems: "center",
   },
@@ -154,6 +178,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "600",
   },
+
   backButton: {
     marginTop: 16,
     padding: 10,
@@ -165,6 +190,11 @@ const styles = StyleSheet.create({
   backButtonText: {
     color: PRIMARY_GREEN,
     fontWeight: "600",
+  },
+
+  errorText: {
+    color: "red",
+    fontSize: 18,
   },
 });
 
